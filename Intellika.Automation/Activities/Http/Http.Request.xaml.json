@@ -1,0 +1,135 @@
+{
+    "DisplayName":  "Send Request",
+    "Tooltip":  "Issues an HTTP request with timeout, retry on transient failures, and optional bearer authentication.",
+    "HelpLink":  null,
+    "Color":  "#5B6CFF",
+    "OriginalIconFileName":  "Http.Request.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Method",
+                          "DisplayName":  "Method",
+                          "Category":  null,
+                          "Tooltip":  "HTTP verb.",
+                          "Placeholder":  "GET",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "GET",
+                                                  "POST",
+                                                  "PUT",
+                                                  "PATCH",
+                                                  "DELETE"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Url",
+                          "DisplayName":  "URL",
+                          "Category":  null,
+                          "Tooltip":  "Full request URL including query string.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Private_Token",
+                          "DisplayName":  "Bearer Token",
+                          "Category":  "Auth",
+                          "Tooltip":  "Sent as an Authorization bearer header. SecureString so it is never rendered into a log line, whatever the consuming process has configured.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Headers",
+                          "DisplayName":  "Headers",
+                          "Category":  null,
+                          "Tooltip":  "Additional request headers.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Body",
+                          "DisplayName":  "Body",
+                          "Category":  null,
+                          "Tooltip":  "Request body for POST, PUT and PATCH.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout. A call without one can block a robot indefinitely on a dead endpoint.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_MaxRetryCount",
+                          "DisplayName":  "Max Retry Count",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Attempts on transient failure: 408, 429, 500, 502, 503, 504 and transport timeouts. 4xx other than 408 and 429 are never retried.",
+                          "Placeholder":  "3",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_StatusCode",
+                          "DisplayName":  "Status Code",
+                          "Category":  "Output",
+                          "Tooltip":  "HTTP status of the final attempt.",
+                          "Placeholder":  null,
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Body",
+                          "DisplayName":  "Response Body",
+                          "Category":  "Output",
+                          "Tooltip":  "Raw response body as text.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Success",
+                          "DisplayName":  "Success",
+                          "Category":  "Output",
+                          "Tooltip":  "True for any 2xx status.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

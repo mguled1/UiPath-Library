@@ -1,0 +1,122 @@
+{
+    "DisplayName":  "Create Record",
+    "Tooltip":  "Creates a record in a ServiceNow table and returns both its sys_id and its display number.",
+    "HelpLink":  null,
+    "Color":  "#7AAC99",
+    "OriginalIconFileName":  "Record.Create.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Instance",
+                          "DisplayName":  "Instance",
+                          "Category":  null,
+                          "Tooltip":  "ServiceNow instance for the REST call. Credentials for each instance are resolved from config.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "dev",
+                                                  "uat",
+                                                  "prod"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Table",
+                          "DisplayName":  "Table",
+                          "Category":  null,
+                          "Tooltip":  "Table to create the record in.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "incident",
+                                                  "task",
+                                                  "incident_task",
+                                                  "change_request",
+                                                  "change_task",
+                                                  "sc_req_item",
+                                                  "sys_user",
+                                                  "sys_user_group"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Payload",
+                          "DisplayName":  "Payload",
+                          "Category":  null,
+                          "Tooltip":  "Field name to value. Common incident fields: short_description, description, assignment_group, caller_id, urgency, impact, category, state, work_notes. Reference fields take a sys_id, not a display name.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_DisplayValues",
+                          "DisplayName":  "Display Values",
+                          "Category":  "Advanced",
+                          "Tooltip":  "false returns database values, true display values, all both. Display values are slower because ServiceNow resolves them rather than reading them directly.",
+                          "Placeholder":  "false",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "false",
+                                                  "true",
+                                                  "all"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_SysId",
+                          "DisplayName":  "Sys Id",
+                          "Category":  "Output",
+                          "Tooltip":  "sys_id of the created record. This is what Update Record and Get Related Tasks need.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Number",
+                          "DisplayName":  "Number",
+                          "Category":  "Output",
+                          "Tooltip":  "Display number of the created record, for example INC0012345. This is what goes in a subject line or a log entry a human reads.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Record",
+                          "DisplayName":  "Record",
+                          "Category":  "Output",
+                          "Tooltip":  "The full created record.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

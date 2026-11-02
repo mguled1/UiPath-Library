@@ -1,0 +1,146 @@
+{
+    "DisplayName":  "Query Records",
+    "Tooltip":  "Returns ServiceNow records matching an encoded query. Both the query and the limit are required, so an unfiltered request against production cannot be issued by accident.",
+    "HelpLink":  null,
+    "Color":  "#7AAC99",
+    "OriginalIconFileName":  "Record.Query.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Instance",
+                          "DisplayName":  "Instance",
+                          "Category":  null,
+                          "Tooltip":  "ServiceNow instance for the REST call.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "dev",
+                                                  "uat",
+                                                  "prod"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Table",
+                          "DisplayName":  "Table",
+                          "Category":  null,
+                          "Tooltip":  "Table to query.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "incident",
+                                                  "task",
+                                                  "incident_task",
+                                                  "change_request",
+                                                  "change_task",
+                                                  "sc_req_item",
+                                                  "sys_user",
+                                                  "sys_user_group"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Query",
+                          "DisplayName":  "Query",
+                          "Category":  null,
+                          "Tooltip":  "Encoded query, for example active=true^assignment_group=\u003csys_id\u003e. Required: an unfiltered request returns up to ServiceNow\u0027s default limit of 10,000 records.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Limit",
+                          "DisplayName":  "Limit",
+                          "Category":  null,
+                          "Tooltip":  "Maximum records to return. Required, because an unbounded query against a production instance is never intended.",
+                          "Placeholder":  null,
+                          "Widget":  "Number",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Fields",
+                          "DisplayName":  "Fields",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Fields to return.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_OrderBy",
+                          "DisplayName":  "Order By",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Field to sort by. Prefix with a minus sign for descending.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_DisplayValues",
+                          "DisplayName":  "Display Values",
+                          "Category":  "Advanced",
+                          "Tooltip":  "false returns database values, true display values, all both.",
+                          "Placeholder":  "false",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "false",
+                                                  "true",
+                                                  "all"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Records",
+                          "DisplayName":  "Records",
+                          "Category":  "Output",
+                          "Tooltip":  "Matching records.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Count",
+                          "DisplayName":  "Count",
+                          "Category":  "Output",
+                          "Tooltip":  "Number of records returned. Equal to Limit means results were truncated, and a warning is logged.",
+                          "Placeholder":  null,
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

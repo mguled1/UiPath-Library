@@ -1,0 +1,81 @@
+{
+    "DisplayName":  "Delete Files",
+    "Tooltip":  "Deletes files matching a pattern in a folder. Destructive: the pattern is required, so deleting everything has to be asked for explicitly.",
+    "HelpLink":  null,
+    "Color":  "#E44949",
+    "OriginalIconFileName":  "Files.Delete.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Path",
+                          "DisplayName":  "Path",
+                          "Category":  null,
+                          "Tooltip":  "Folder to delete from. Must exist.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Pattern",
+                          "DisplayName":  "Pattern",
+                          "Category":  null,
+                          "Tooltip":  "Glob pattern, for example *.tmp. Required: pass * explicitly to delete everything in the folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_OlderThanDays",
+                          "DisplayName":  "Older Than Days",
+                          "Category":  "Filter",
+                          "Tooltip":  "Only delete files last modified more than this many days ago. Zero means no age filter.",
+                          "Placeholder":  "0",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Recursive",
+                          "DisplayName":  "Recursive",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Include subfolders.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_DeletedCount",
+                          "DisplayName":  "Deleted Count",
+                          "Category":  "Output",
+                          "Tooltip":  "How many files were deleted. A cleanup that removed 10,000 instead of 10 is only discoverable if the activity says so.",
+                          "Placeholder":  null,
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_DeletedPaths",
+                          "DisplayName":  "Deleted Paths",
+                          "Category":  "Output",
+                          "Tooltip":  "Full paths of every file deleted.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

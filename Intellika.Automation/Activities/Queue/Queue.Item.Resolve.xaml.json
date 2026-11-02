@@ -1,0 +1,84 @@
+{
+    "DisplayName":  "Resolve Queue Item",
+    "Tooltip":  "Closes a transaction as successful or failed, with the failure classified so Orchestrator retries only what is worth retrying.",
+    "HelpLink":  null,
+    "Color":  "#FA4616",
+    "OriginalIconFileName":  "Queue.Item.Resolve.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_QueueItem",
+                          "DisplayName":  "Queue Item",
+                          "Category":  null,
+                          "Tooltip":  "The transaction to close.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Successful",
+                          "DisplayName":  "Successful",
+                          "Category":  null,
+                          "Tooltip":  "True marks the transaction Successful. False marks it Failed.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_ErrorType",
+                          "DisplayName":  "Error Type",
+                          "Category":  "Failure",
+                          "Tooltip":  "Application allows Orchestrator\u0027s automatic retries. Business does not. Required when Successful is false, and enforced at runtime.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "Application",
+                                                  "Business"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_FailureReason",
+                          "DisplayName":  "Failure Reason",
+                          "Category":  "Failure",
+                          "Tooltip":  "Why it failed. Required when Successful is false, and enforced at runtime: a failed item with no reason cannot be triaged.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Folder",
+                          "DisplayName":  "Folder",
+                          "Category":  null,
+                          "Tooltip":  "Orchestrator folder holding the queue. Empty uses the robot\u0027s current folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_OutputData",
+                          "DisplayName":  "Output Data",
+                          "Category":  null,
+                          "Tooltip":  "Data to attach to the transaction for reporting.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

@@ -1,0 +1,32 @@
+Sheet,Key,Value,Comment
+Settings,TempPath,%TEMP%\{ProcessName},Scratch directory; emptied in the Finally block
+Settings,MaxRetryCount,3,Attempts before a transaction is failed permanently
+Settings,RetryDelaySeconds,2,Base for exponential backoff: 2s / 4s / 8s
+Settings,TimeoutSeconds,30,Default timeout for network calls
+Settings,QueueName,MyProcess_Transactions,Orchestrator queue this process reads
+Settings,MaxConcurrent,1,Concurrency gate for Check Running Jobs
+Settings,Mail.FromName,Automation Service,SMTP fallback path only; O365 sends as the connected mailbox
+Settings,Mail.FromAddress,no-reply@example.com,SMTP fallback path only
+Settings,Mail.TimeoutSeconds,30,
+Settings,Graph.ReadOnly.TenantId,00000000-0000-0000-0000-000000000000,Entra tenant
+Settings,Graph.ReadOnly.ClientId,00000000-0000-0000-0000-000000000000,App registration
+Settings,Graph.ReadOnly.CredentialAsset,Graph_ReadOnly_ClientSecret,Orchestrator credential asset NAME - never the secret
+Settings,ServiceNow.prod.BaseUrl,https://company.service-now.com,
+Settings,ServiceNow.prod.CredentialAsset,ServiceNow_Prod_ApiCredential,Asset name only
+Settings,ServiceNow.uat.BaseUrl,https://company-uat.service-now.com,
+Settings,ServiceNow.uat.CredentialAsset,ServiceNow_Uat_ApiCredential,
+Settings,ServiceNow.dev.BaseUrl,https://devNNNNN.service-now.com,
+Settings,ServiceNow.dev.CredentialAsset,ServiceNow_Dev_ApiCredential,
+Settings,SharePoint.SiteUrl,https://contoso.sharepoint.com/teams/YourTeam,Paste the browser URL as-is
+Settings,CyberArk.Host,vault.example.internal,
+Settings,CyberArk.SafeName,SAFE_NAME_HERE,
+Constants,ProcessName,MyProcess,Appears on every log line via Set Log Context
+Constants,ClientName,MyClient,Dashboards key on this - do not change once live
+Constants,BotType,performer,dispatcher / performer / single
+Constants,Environment,prod,Informational only - never a code path
+Constants,Mail.DisclaimerText,This message was sent by an automated process. Replies are not monitored.,Empty means no disclaimer
+Constants,Mail.ContactEmail,automation-support@example.com,Empty means no contact line
+Constants,Mail.ContactLine,Questions about this message: {ContactEmail},{ContactEmail} is substituted
+Assets,OrchestratorApiCredential,MyProcess_OrchestratorApi,Logical name -> Orchestrator asset name
+Assets,ServiceNowCredential,ServiceNow_Prod_ApiCredential,
+Assets,GraphClientSecret,Graph_ReadOnly_ClientSecret,

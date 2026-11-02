@@ -1,0 +1,122 @@
+{
+    "DisplayName":  "Update Record",
+    "Tooltip":  "Updates fields on an existing ServiceNow record.",
+    "HelpLink":  null,
+    "Color":  "#7AAC99",
+    "OriginalIconFileName":  "Record.Update.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Instance",
+                          "DisplayName":  "Instance",
+                          "Category":  null,
+                          "Tooltip":  "ServiceNow instance for the REST call.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "dev",
+                                                  "uat",
+                                                  "prod"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Table",
+                          "DisplayName":  "Table",
+                          "Category":  null,
+                          "Tooltip":  "Table holding the record.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "incident",
+                                                  "task",
+                                                  "incident_task",
+                                                  "change_request",
+                                                  "change_task",
+                                                  "sc_req_item",
+                                                  "sys_user",
+                                                  "sys_user_group"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_SysId",
+                          "DisplayName":  "Sys Id",
+                          "Category":  null,
+                          "Tooltip":  "The record\u0027s 32-character sys_id, as returned by Create Record.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Payload",
+                          "DisplayName":  "Payload",
+                          "Category":  null,
+                          "Tooltip":  "Fields to set. Only the fields supplied are changed. Common: state, work_notes, close_notes, close_code, assignment_group.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_DisplayValues",
+                          "DisplayName":  "Display Values",
+                          "Category":  "Advanced",
+                          "Tooltip":  "false returns database values, true display values, all both.",
+                          "Placeholder":  "false",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "false",
+                                                  "true",
+                                                  "all"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Record",
+                          "DisplayName":  "Record",
+                          "Category":  "Output",
+                          "Tooltip":  "The record after the update.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Success",
+                          "DisplayName":  "Success",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the update was accepted. Updating a record that does not exist throws rather than silently succeeding.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

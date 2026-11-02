@@ -1,0 +1,45 @@
+{
+    "DisplayName":  "Create Folder",
+    "Tooltip":  "Creates a folder, including any missing parent folders.",
+    "HelpLink":  null,
+    "Color":  "#8A8F98",
+    "OriginalIconFileName":  "Folder.Create.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Path",
+                          "DisplayName":  "Path",
+                          "Category":  null,
+                          "Tooltip":  "Folder to create. Parent folders are created as needed.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Path",
+                          "DisplayName":  "Resolved Path",
+                          "Category":  "Output",
+                          "Tooltip":  "Full resolved path, so a caller holding a relative path does not have to rebuild it.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Created",
+                          "DisplayName":  "Created",
+                          "Category":  "Output",
+                          "Tooltip":  "True if the folder was created, false if it already existed.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

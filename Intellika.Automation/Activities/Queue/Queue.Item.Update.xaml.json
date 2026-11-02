@@ -1,0 +1,69 @@
+{
+    "DisplayName":  "Update Queue Item",
+    "Tooltip":  "Merges values into a transaction\u0027s specific content without replacing the rest.",
+    "HelpLink":  null,
+    "Color":  "#FA4616",
+    "OriginalIconFileName":  "Queue.Item.Update.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_QueueItem",
+                          "DisplayName":  "Queue Item",
+                          "Category":  null,
+                          "Tooltip":  "The transaction to update.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Values",
+                          "DisplayName":  "Values",
+                          "Category":  null,
+                          "Tooltip":  "Keys to set on the transaction\u0027s specific content. Keys not supplied are left alone.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Replace",
+                          "DisplayName":  "Replace",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Replace the entire content instead of merging. Destructive: anything not in Values is lost.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Folder",
+                          "DisplayName":  "Folder",
+                          "Category":  null,
+                          "Tooltip":  "Orchestrator folder holding the queue. Empty uses the robot\u0027s current folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Success",
+                          "DisplayName":  "Success",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the update was accepted.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

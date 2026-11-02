@@ -1,0 +1,93 @@
+{
+    "DisplayName":  "Check Running Jobs",
+    "Tooltip":  "Reports how many of the named processes are running or pending, for use as a concurrency gate.",
+    "HelpLink":  null,
+    "Color":  "#FA4616",
+    "OriginalIconFileName":  "Job.CheckRunning.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_ProcessNames",
+                          "DisplayName":  "Process Names",
+                          "Category":  null,
+                          "Tooltip":  "Release names to check.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_MaxConcurrent",
+                          "DisplayName":  "Max Concurrent",
+                          "Category":  null,
+                          "Tooltip":  "Running jobs allowed before Limit Reached is true.",
+                          "Placeholder":  "1",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_ExcludeSelf",
+                          "DisplayName":  "Exclude Self",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Ignore the job making this call. Leave true unless you specifically want to count yourself.",
+                          "Placeholder":  "True",
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Folder",
+                          "DisplayName":  "Folder",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Orchestrator folder to check. Empty uses the robot\u0027s current folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_LimitReached",
+                          "DisplayName":  "Limit Reached",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the running count has reached Max Concurrent.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_RunningCount",
+                          "DisplayName":  "Running Count",
+                          "Category":  "Output",
+                          "Tooltip":  "How many of the named processes are running or pending.",
+                          "Placeholder":  null,
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_RunningProcesses",
+                          "DisplayName":  "Running Processes",
+                          "Category":  "Output",
+                          "Tooltip":  "Which ones. Log these so a blocked start says what blocked it.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

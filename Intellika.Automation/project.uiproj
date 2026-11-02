@@ -1,0 +1,6 @@
+{
+  "Name": "Intellika.Automation",
+  "ProjectType": "Library",
+  "Description": "Reusable automation components - config, logging, retry, HTTP, queue, Orchestrator and integration activities.",
+  "MainFile": "Activities/Core/Config.Load.xaml"
+}

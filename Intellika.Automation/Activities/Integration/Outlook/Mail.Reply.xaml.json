@@ -1,0 +1,121 @@
+{
+    "DisplayName":  "Reply To Email",
+    "Tooltip":  "Replies to an Outlook 365 message, optionally to all recipients.",
+    "HelpLink":  null,
+    "Color":  "#0078D4",
+    "OriginalIconFileName":  "Mail.Reply.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Connection",
+                          "DisplayName":  "Outlook Connection",
+                          "Category":  null,
+                          "Tooltip":  "Outlook 365 connection from Integration Service.",
+                          "Placeholder":  null,
+                          "Widget":  "Connection",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  1,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Message",
+                          "DisplayName":  "Message",
+                          "Category":  null,
+                          "Tooltip":  "The message being replied to, as returned by Get Emails.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Body",
+                          "DisplayName":  "Body",
+                          "Category":  null,
+                          "Tooltip":  "Reply body. HTML is accepted.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_ReplyAll",
+                          "DisplayName":  "Reply All",
+                          "Category":  null,
+                          "Tooltip":  "Reply to every recipient of the original rather than the sender alone.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_CC",
+                          "DisplayName":  "CC",
+                          "Category":  "Recipients",
+                          "Tooltip":  "Additional CC recipients beyond those carried over.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_BCC",
+                          "DisplayName":  "BCC",
+                          "Category":  "Recipients",
+                          "Tooltip":  "BCC recipients.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Attachments",
+                          "DisplayName":  "Attachments",
+                          "Category":  "Optional",
+                          "Tooltip":  "Full paths of files to attach. Verified before sending.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Importance",
+                          "DisplayName":  "Importance",
+                          "Category":  "Optional",
+                          "Tooltip":  "Message importance.",
+                          "Placeholder":  "Normal",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "Low",
+                                                  "Normal",
+                                                  "High"
+                                              ]
+                      },
+                      {
+                          "Name":  "out_Success",
+                          "DisplayName":  "Success",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the reply was accepted.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

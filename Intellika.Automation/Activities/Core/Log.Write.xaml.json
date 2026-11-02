@@ -1,0 +1,63 @@
+{
+    "DisplayName":  "Write Log",
+    "Tooltip":  "Writes a structured log entry through the robot\u0027s logging pipeline. Identity fields come from the log context, not from arguments.",
+    "HelpLink":  null,
+    "Color":  "#11AAAA",
+    "OriginalIconFileName":  "Log.Write.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Message",
+                          "DisplayName":  "Message",
+                          "Category":  null,
+                          "Tooltip":  "Human-readable message. Name the record and the system: \u0027Ticket.Create failed for invoice INV-4471\u0027, not \u0027Error occurred\u0027.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Level",
+                          "DisplayName":  "Level",
+                          "Category":  null,
+                          "Tooltip":  "Log level. Info for milestones, Warn for recovered failures, Error for a failed transaction.",
+                          "Placeholder":  "Info",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "Trace",
+                                                  "Info",
+                                                  "Warn",
+                                                  "Error",
+                                                  "Fatal"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Stage",
+                          "DisplayName":  "Stage",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Where in the process this happened, for example ServiceNow.Ticket.Create. Becomes a queryable field so one search replaces a regex over free text.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Data",
+                          "DisplayName":  "Data",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Extra structured fields for this event only.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

@@ -1,0 +1,96 @@
+{
+    "DisplayName":  "Load Config",
+    "Tooltip":  "Loads a configuration workbook into a dictionary, from a local file or an Orchestrator storage bucket.",
+    "HelpLink":  null,
+    "Color":  "#11AAAA",
+    "OriginalIconFileName":  "Config.Load.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Source",
+                          "DisplayName":  "Source",
+                          "Category":  null,
+                          "Tooltip":  "Where the config workbook lives. LocalFile reads from disk. StorageBucket downloads it from an Orchestrator storage bucket first.",
+                          "Placeholder":  null,
+                          "Widget":  "RadioGroup",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "LocalFile",
+                                                  "StorageBucket"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_ConfigPath",
+                          "DisplayName":  "Config Path",
+                          "Category":  null,
+                          "Tooltip":  "Path to the config workbook. A full local path when Source is LocalFile; the file name inside the bucket when Source is StorageBucket.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_SheetNames",
+                          "DisplayName":  "Sheet Names",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Sheets to load as key/value settings. Defaults to Settings and Constants. The sheet named Assets is always read separately into Asset Names.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_BucketName",
+                          "DisplayName":  "Bucket Name",
+                          "Category":  "Storage Bucket",
+                          "Tooltip":  "Orchestrator storage bucket holding the config workbook. Required when Source is StorageBucket.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_BucketFolder",
+                          "DisplayName":  "Bucket Folder",
+                          "Category":  "Storage Bucket",
+                          "Tooltip":  "Orchestrator folder the storage bucket belongs to, for example Finance/Production. Leave empty to use the robot\u0027s current folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Config",
+                          "DisplayName":  "Config",
+                          "Category":  "Output",
+                          "Tooltip":  "All key/value pairs from the settings sheets, merged into one dictionary. Lookups are case-insensitive.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_AssetNames",
+                          "DisplayName":  "Asset Names",
+                          "Category":  "Output",
+                          "Tooltip":  "Logical name to Orchestrator asset name mapping, read from the Assets sheet.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

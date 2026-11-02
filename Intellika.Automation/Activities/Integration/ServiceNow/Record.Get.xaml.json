@@ -1,0 +1,122 @@
+{
+    "DisplayName":  "Get Record",
+    "Tooltip":  "Retrieves one ServiceNow record by sys_id.",
+    "HelpLink":  null,
+    "Color":  "#7AAC99",
+    "OriginalIconFileName":  "Record.Get.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Instance",
+                          "DisplayName":  "Instance",
+                          "Category":  null,
+                          "Tooltip":  "ServiceNow instance for the REST call.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "dev",
+                                                  "uat",
+                                                  "prod"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_Table",
+                          "DisplayName":  "Table",
+                          "Category":  null,
+                          "Tooltip":  "Table to read from.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "incident",
+                                                  "task",
+                                                  "incident_task",
+                                                  "change_request",
+                                                  "change_task",
+                                                  "sc_req_item",
+                                                  "sys_user",
+                                                  "sys_user_group"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_SysId",
+                          "DisplayName":  "Sys Id",
+                          "Category":  null,
+                          "Tooltip":  "The record\u0027s 32-character sys_id. Not the display number: INC0012345 is a number, not a sys_id, and passing one returns nothing rather than an error.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Fields",
+                          "DisplayName":  "Fields",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Fields to return. Restricting these is the single biggest performance win on a wide table.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_DisplayValues",
+                          "DisplayName":  "Display Values",
+                          "Category":  "Advanced",
+                          "Tooltip":  "false returns database values, true display values, all both.",
+                          "Placeholder":  "false",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "false",
+                                                  "true",
+                                                  "all"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Record",
+                          "DisplayName":  "Record",
+                          "Category":  "Output",
+                          "Tooltip":  "The record. Empty when not found.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Found",
+                          "DisplayName":  "Found",
+                          "Category":  "Output",
+                          "Tooltip":  "False when no record has that sys_id. A missing record does not throw, so a polling loop can continue.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

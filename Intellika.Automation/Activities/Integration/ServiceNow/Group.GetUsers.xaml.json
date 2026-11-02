@@ -1,0 +1,85 @@
+{
+    "DisplayName":  "Get Group Members",
+    "Tooltip":  "Expands ServiceNow groups to their member user sys_ids, deduplicated across groups.",
+    "HelpLink":  null,
+    "Color":  "#7AAC99",
+    "OriginalIconFileName":  "Group.GetUsers.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Instance",
+                          "DisplayName":  "Instance",
+                          "Category":  null,
+                          "Tooltip":  "ServiceNow instance for the REST call.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "dev",
+                                                  "uat",
+                                                  "prod"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_GroupIds",
+                          "DisplayName":  "Group Ids",
+                          "Category":  null,
+                          "Tooltip":  "sys_user_group sys_ids to expand.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_ActiveOnly",
+                          "DisplayName":  "Active Only",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Exclude deactivated users. Leave true: paging people who have left fails silently.",
+                          "Placeholder":  "True",
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_UserIds",
+                          "DisplayName":  "User Ids",
+                          "Category":  "Output",
+                          "Tooltip":  "Distinct sys_user sys_ids across all groups. A user in two groups appears once.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_EmptyGroups",
+                          "DisplayName":  "Empty Groups",
+                          "Category":  "Output",
+                          "Tooltip":  "Groups that resolved to no members, so an empty notification list is distinguishable from a mistyped group id.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

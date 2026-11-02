@@ -1,0 +1,121 @@
+{
+    "DisplayName":  "Forward Email",
+    "Tooltip":  "Forwards an Outlook 365 message to one or more recipients.",
+    "HelpLink":  null,
+    "Color":  "#0078D4",
+    "OriginalIconFileName":  "Mail.Forward.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Connection",
+                          "DisplayName":  "Outlook Connection",
+                          "Category":  null,
+                          "Tooltip":  "Outlook 365 connection from Integration Service.",
+                          "Placeholder":  null,
+                          "Widget":  "Connection",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  1,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Message",
+                          "DisplayName":  "Message",
+                          "Category":  null,
+                          "Tooltip":  "The message being forwarded, as returned by Get Emails.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_To",
+                          "DisplayName":  "To",
+                          "Category":  null,
+                          "Tooltip":  "Recipients of the forward. At least one is required.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Comment",
+                          "DisplayName":  "Comment",
+                          "Category":  null,
+                          "Tooltip":  "Text placed above the forwarded content.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_CC",
+                          "DisplayName":  "CC",
+                          "Category":  "Recipients",
+                          "Tooltip":  "CC recipients.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_BCC",
+                          "DisplayName":  "BCC",
+                          "Category":  "Recipients",
+                          "Tooltip":  "BCC recipients.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Attachments",
+                          "DisplayName":  "Attachments",
+                          "Category":  "Optional",
+                          "Tooltip":  "Additional files to attach beyond those already on the message. Verified before sending.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Importance",
+                          "DisplayName":  "Importance",
+                          "Category":  "Optional",
+                          "Tooltip":  "Message importance.",
+                          "Placeholder":  "Normal",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "Low",
+                                                  "Normal",
+                                                  "High"
+                                              ]
+                      },
+                      {
+                          "Name":  "out_Success",
+                          "DisplayName":  "Success",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the forward was accepted.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

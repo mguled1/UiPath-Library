@@ -1,0 +1,33 @@
+{
+    "DisplayName":  "Set Log Context",
+    "Tooltip":  "Registers process identity fields so every later log line carries them automatically. Call once at init, and again per transaction to tag the transaction id.",
+    "HelpLink":  null,
+    "Color":  "#11AAAA",
+    "OriginalIconFileName":  "Log.Context.Set.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Config",
+                          "DisplayName":  "Config",
+                          "Category":  null,
+                          "Tooltip":  "Config dictionary. ProcessName, ClientName, BotType and Environment are read from it and registered as log fields.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TransactionId",
+                          "DisplayName":  "Transaction Id",
+                          "Category":  null,
+                          "Tooltip":  "Tags every subsequent log line with this transaction. Pass the queue item reference at the start of each iteration.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

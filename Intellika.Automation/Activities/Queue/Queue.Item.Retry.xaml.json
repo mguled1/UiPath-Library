@@ -1,0 +1,93 @@
+{
+    "DisplayName":  "Retry Queue Item",
+    "Tooltip":  "Returns a transaction to the queue AND increments its retry count, failing it permanently once the limit is reached. Re-queueing without counting is always a bug, so this does both.",
+    "HelpLink":  null,
+    "Color":  "#FA4616",
+    "OriginalIconFileName":  "Queue.Item.Retry.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_QueueItem",
+                          "DisplayName":  "Queue Item",
+                          "Category":  null,
+                          "Tooltip":  "The transaction to return to the queue.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_MaxRetryCount",
+                          "DisplayName":  "Max Retry Count",
+                          "Category":  null,
+                          "Tooltip":  "Attempts allowed before the item is failed permanently.",
+                          "Placeholder":  "3",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_PostponeSeconds",
+                          "DisplayName":  "Postpone Seconds",
+                          "Category":  null,
+                          "Tooltip":  "Delay before the item becomes eligible again. Zero makes it immediately available.",
+                          "Placeholder":  "0",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Reason",
+                          "DisplayName":  "Reason",
+                          "Category":  null,
+                          "Tooltip":  "Why it is being retried. Recorded on the item and written to the log.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Folder",
+                          "DisplayName":  "Folder",
+                          "Category":  null,
+                          "Tooltip":  "Orchestrator folder holding the queue. Empty uses the robot\u0027s current folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_RetryCount",
+                          "DisplayName":  "Retry Count",
+                          "Category":  "Output",
+                          "Tooltip":  "Attempt number after this call.",
+                          "Placeholder":  null,
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_RetryExhausted",
+                          "DisplayName":  "Retry Exhausted",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the limit was reached and the item was failed instead of re-queued. The item is already closed: do not also call Resolve.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

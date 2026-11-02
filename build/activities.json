@@ -1,0 +1,422 @@
+{
+  "package": "Intellika.Automation",
+  "families": {
+    "core":        { "color": "#11AAAA", "icon": "gear" },
+    "orchestrator":{ "color": "#FA4616", "icon": "robot" },
+    "queue":       { "color": "#FA4616", "icon": "queue" },
+    "http":        { "color": "#5B6CFF", "icon": "globe" },
+    "file":        { "color": "#8A8F98", "icon": "folder" },
+    "danger":      { "color": "#E44949", "icon": "trash" },
+    "security":    { "color": "#6B4FBB", "icon": "key" },
+    "microsoft":   { "color": "#0078D4", "icon": "cloud" },
+    "mail":        { "color": "#0078D4", "icon": "mail" },
+    "servicenow":  { "color": "#7AAC99", "icon": "ticket" }
+  },
+  "activities": [
+    {
+      "path": "Activities/Core",
+      "file": "Config.Load",
+      "family": "core",
+      "display": "Load Config",
+      "tooltip": "Loads a configuration workbook into a dictionary, from a local file or an Orchestrator storage bucket.",
+      "args": [
+        { "n": "in_Source", "d": "Source", "t": "Where the config workbook lives. LocalFile reads from disk. StorageBucket downloads it from an Orchestrator storage bucket first.", "w": "RadioGroup", "req": true, "pri": true, "items": ["LocalFile", "StorageBucket"] },
+        { "n": "in_ConfigPath", "d": "Config Path", "t": "Path to the config workbook. A full local path when Source is LocalFile; the file name inside the bucket when Source is StorageBucket.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_SheetNames", "d": "Sheet Names", "t": "Sheets to load as key/value settings. Defaults to Settings and Constants. The sheet named Assets is always read separately into Asset Names.", "w": "StringArray", "c": "Advanced" },
+        { "n": "in_BucketName", "d": "Bucket Name", "t": "Orchestrator storage bucket holding the config workbook. Required when Source is StorageBucket.", "w": "TextComposer", "c": "Storage Bucket" },
+        { "n": "in_BucketFolder", "d": "Bucket Folder", "t": "Orchestrator folder the storage bucket belongs to, for example Finance/Production. Leave empty to use the robot's current folder.", "w": "TextComposer", "c": "Storage Bucket" },
+        { "n": "out_Config", "d": "Config", "t": "All key/value pairs from the settings sheets, merged into one dictionary. Lookups are case-insensitive.", "w": "Dictionary", "c": "Output", "pri": true },
+        { "n": "out_AssetNames", "d": "Asset Names", "t": "Logical name to Orchestrator asset name mapping, read from the Assets sheet.", "w": "Dictionary", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Core",
+      "file": "Log.Context.Set",
+      "family": "core",
+      "display": "Set Log Context",
+      "tooltip": "Registers process identity fields so every later log line carries them automatically. Call once at init, and again per transaction to tag the transaction id.",
+      "args": [
+        { "n": "in_Config", "d": "Config", "t": "Config dictionary. ProcessName, ClientName, BotType and Environment are read from it and registered as log fields.", "w": "Dictionary", "req": true, "pri": true },
+        { "n": "in_TransactionId", "d": "Transaction Id", "t": "Tags every subsequent log line with this transaction. Pass the queue item reference at the start of each iteration.", "w": "TextComposer", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Core",
+      "file": "Log.Write",
+      "family": "core",
+      "display": "Write Log",
+      "tooltip": "Writes a structured log entry through the robot's logging pipeline. Identity fields come from the log context, not from arguments.",
+      "args": [
+        { "n": "in_Message", "d": "Message", "t": "Human-readable message. Name the record and the system: 'Ticket.Create failed for invoice INV-4471', not 'Error occurred'.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Level", "d": "Level", "t": "Log level. Info for milestones, Warn for recovered failures, Error for a failed transaction.", "w": "Dropdown", "pri": true, "items": ["Trace", "Info", "Warn", "Error", "Fatal"], "ph": "Info" },
+        { "n": "in_Stage", "d": "Stage", "t": "Where in the process this happened, for example ServiceNow.Ticket.Create. Becomes a queryable field so one search replaces a regex over free text.", "w": "TextComposer", "c": "Advanced" },
+        { "n": "in_Data", "d": "Data", "t": "Extra structured fields for this event only.", "w": "Dictionary", "c": "Advanced" }
+      ]
+    },
+    {
+      "path": "Activities/Orchestrator",
+      "file": "Job.CheckRunning",
+      "family": "orchestrator",
+      "display": "Check Running Jobs",
+      "tooltip": "Reports how many of the named processes are running or pending, for use as a concurrency gate.",
+      "args": [
+        { "n": "in_ProcessNames", "d": "Process Names", "t": "Release names to check.", "w": "StringArray", "req": true, "pri": true },
+        { "n": "in_MaxConcurrent", "d": "Max Concurrent", "t": "Running jobs allowed before Limit Reached is true.", "w": "Number", "ph": "1", "pri": true },
+        { "n": "in_ExcludeSelf", "d": "Exclude Self", "t": "Ignore the job making this call. Leave true unless you specifically want to count yourself.", "w": "Toggle", "c": "Advanced", "ph": "True" },
+        { "n": "in_Folder", "d": "Folder", "t": "Orchestrator folder to check. Empty uses the robot's current folder.", "w": "TextComposer", "c": "Advanced" },
+        { "n": "out_LimitReached", "d": "Limit Reached", "t": "True when the running count has reached Max Concurrent.", "w": "Toggle", "c": "Output", "pri": true },
+        { "n": "out_RunningCount", "d": "Running Count", "t": "How many of the named processes are running or pending.", "w": "Number", "c": "Output" },
+        { "n": "out_RunningProcesses", "d": "Running Processes", "t": "Which ones. Log these so a blocked start says what blocked it.", "w": "StringArray", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Orchestrator",
+      "file": "Stop.Check",
+      "family": "orchestrator",
+      "display": "Check For Stop",
+      "tooltip": "Returns true when a stop has been requested for this job from Orchestrator. Returns rather than throws, so the caller can finish the current transaction first.",
+      "args": [
+        { "n": "out_StopRequested", "d": "Stop Requested", "t": "True when Orchestrator has requested this job stop.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Queue",
+      "file": "Queue.Item.Get",
+      "family": "queue",
+      "display": "Get Queue Item",
+      "tooltip": "Retrieves one new transaction from an Orchestrator queue.",
+      "args": [
+        { "n": "in_QueueName", "d": "Queue Name", "t": "Queue to pull from.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Folder", "d": "Folder", "t": "Orchestrator folder holding the queue. Empty uses the robot's current folder.", "w": "TextComposer" },
+        { "n": "in_RetrievalOrder", "d": "Retrieval Order", "t": "Order transactions are taken in. In-progress items are deliberately not offered: retrieving one hands a second robot work another robot is already doing.", "w": "Dropdown", "c": "Filtering", "items": ["NewFirst", "NewOnly"], "ph": "NewFirst" },
+        { "n": "in_ReferencePrefix", "d": "Reference Prefix", "t": "Return only items whose Reference starts with this value. Empty matches any.", "w": "TextComposer", "c": "Filtering" },
+        { "n": "out_QueueItem", "d": "Queue Item", "t": "The transaction. Nothing when none matched.", "c": "Output", "pri": true },
+        { "n": "out_Found", "d": "Found", "t": "True when a transaction was returned. Branch on this to end the transaction loop.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Queue",
+      "file": "Queue.Item.Resolve",
+      "family": "queue",
+      "display": "Resolve Queue Item",
+      "tooltip": "Closes a transaction as successful or failed, with the failure classified so Orchestrator retries only what is worth retrying.",
+      "args": [
+        { "n": "in_QueueItem", "d": "Queue Item", "t": "The transaction to close.", "req": true, "pri": true },
+        { "n": "in_Successful", "d": "Successful", "t": "True marks the transaction Successful. False marks it Failed.", "w": "Toggle", "req": true, "pri": true },
+        { "n": "in_ErrorType", "d": "Error Type", "t": "Application allows Orchestrator's automatic retries. Business does not. Required when Successful is false, and enforced at runtime.", "w": "Dropdown", "c": "Failure", "items": ["Application", "Business"] },
+        { "n": "in_FailureReason", "d": "Failure Reason", "t": "Why it failed. Required when Successful is false, and enforced at runtime: a failed item with no reason cannot be triaged.", "w": "TextComposer", "c": "Failure" },
+        { "n": "in_Folder", "d": "Folder", "t": "Orchestrator folder holding the queue. Empty uses the robot's current folder.", "w": "TextComposer" },
+        { "n": "in_OutputData", "d": "Output Data", "t": "Data to attach to the transaction for reporting.", "w": "Dictionary" }
+      ]
+    },
+    {
+      "path": "Activities/Queue",
+      "file": "Queue.Item.Retry",
+      "family": "queue",
+      "display": "Retry Queue Item",
+      "tooltip": "Returns a transaction to the queue AND increments its retry count, failing it permanently once the limit is reached. Re-queueing without counting is always a bug, so this does both.",
+      "args": [
+        { "n": "in_QueueItem", "d": "Queue Item", "t": "The transaction to return to the queue.", "req": true, "pri": true },
+        { "n": "in_MaxRetryCount", "d": "Max Retry Count", "t": "Attempts allowed before the item is failed permanently.", "w": "Number", "ph": "3", "pri": true },
+        { "n": "in_PostponeSeconds", "d": "Postpone Seconds", "t": "Delay before the item becomes eligible again. Zero makes it immediately available.", "w": "Number", "ph": "0" },
+        { "n": "in_Reason", "d": "Reason", "t": "Why it is being retried. Recorded on the item and written to the log.", "w": "TextComposer" },
+        { "n": "in_Folder", "d": "Folder", "t": "Orchestrator folder holding the queue. Empty uses the robot's current folder.", "w": "TextComposer" },
+        { "n": "out_RetryCount", "d": "Retry Count", "t": "Attempt number after this call.", "w": "Number", "c": "Output", "pri": true },
+        { "n": "out_RetryExhausted", "d": "Retry Exhausted", "t": "True when the limit was reached and the item was failed instead of re-queued. The item is already closed: do not also call Resolve.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Queue",
+      "file": "Queue.Item.Update",
+      "family": "queue",
+      "display": "Update Queue Item",
+      "tooltip": "Merges values into a transaction's specific content without replacing the rest.",
+      "args": [
+        { "n": "in_QueueItem", "d": "Queue Item", "t": "The transaction to update.", "req": true, "pri": true },
+        { "n": "in_Values", "d": "Values", "t": "Keys to set on the transaction's specific content. Keys not supplied are left alone.", "w": "Dictionary", "req": true, "pri": true },
+        { "n": "in_Replace", "d": "Replace", "t": "Replace the entire content instead of merging. Destructive: anything not in Values is lost.", "w": "Toggle", "c": "Advanced" },
+        { "n": "in_Folder", "d": "Folder", "t": "Orchestrator folder holding the queue. Empty uses the robot's current folder.", "w": "TextComposer" },
+        { "n": "out_Success", "d": "Success", "t": "True when the update was accepted.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Http",
+      "file": "Http.Request",
+      "family": "http",
+      "display": "Send Request",
+      "tooltip": "Issues an HTTP request with timeout, retry on transient failures, and optional bearer authentication.",
+      "args": [
+        { "n": "in_Method", "d": "Method", "t": "HTTP verb.", "w": "Dropdown", "req": true, "pri": true, "items": ["GET", "POST", "PUT", "PATCH", "DELETE"], "ph": "GET" },
+        { "n": "in_Url", "d": "URL", "t": "Full request URL including query string.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Private_Token", "d": "Bearer Token", "t": "Sent as an Authorization bearer header. SecureString so it is never rendered into a log line, whatever the consuming process has configured.", "c": "Auth" },
+        { "n": "in_Headers", "d": "Headers", "t": "Additional request headers.", "w": "Dictionary" },
+        { "n": "in_Body", "d": "Body", "t": "Request body for POST, PUT and PATCH.", "w": "TextComposer" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout. A call without one can block a robot indefinitely on a dead endpoint.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "in_MaxRetryCount", "d": "Max Retry Count", "t": "Attempts on transient failure: 408, 429, 500, 502, 503, 504 and transport timeouts. 4xx other than 408 and 429 are never retried.", "w": "Number", "c": "Advanced", "ph": "3" },
+        { "n": "out_StatusCode", "d": "Status Code", "t": "HTTP status of the final attempt.", "w": "Number", "c": "Output" },
+        { "n": "out_Body", "d": "Response Body", "t": "Raw response body as text.", "w": "TextComposer", "c": "Output", "pri": true },
+        { "n": "out_Success", "d": "Success", "t": "True for any 2xx status.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/File",
+      "file": "Folder.Create",
+      "family": "file",
+      "display": "Create Folder",
+      "tooltip": "Creates a folder, including any missing parent folders.",
+      "args": [
+        { "n": "in_Path", "d": "Path", "t": "Folder to create. Parent folders are created as needed.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "out_Path", "d": "Resolved Path", "t": "Full resolved path, so a caller holding a relative path does not have to rebuild it.", "w": "TextComposer", "c": "Output", "pri": true },
+        { "n": "out_Created", "d": "Created", "t": "True if the folder was created, false if it already existed.", "w": "Toggle", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/File",
+      "file": "Files.Delete",
+      "family": "danger",
+      "display": "Delete Files",
+      "tooltip": "Deletes files matching a pattern in a folder. Destructive: the pattern is required, so deleting everything has to be asked for explicitly.",
+      "args": [
+        { "n": "in_Path", "d": "Path", "t": "Folder to delete from. Must exist.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Pattern", "d": "Pattern", "t": "Glob pattern, for example *.tmp. Required: pass * explicitly to delete everything in the folder.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_OlderThanDays", "d": "Older Than Days", "t": "Only delete files last modified more than this many days ago. Zero means no age filter.", "w": "Number", "c": "Filter", "ph": "0" },
+        { "n": "in_Recursive", "d": "Recursive", "t": "Include subfolders.", "w": "Toggle", "c": "Advanced" },
+        { "n": "out_DeletedCount", "d": "Deleted Count", "t": "How many files were deleted. A cleanup that removed 10,000 instead of 10 is only discoverable if the activity says so.", "w": "Number", "c": "Output", "pri": true },
+        { "n": "out_DeletedPaths", "d": "Deleted Paths", "t": "Full paths of every file deleted.", "w": "StringArray", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Security",
+      "file": "Password.Generate",
+      "family": "security",
+      "display": "Generate Password",
+      "tooltip": "Generates a random password as a SecureString, plus a masked username safe to include in a notification.",
+      "args": [
+        { "n": "in_Length", "d": "Length", "t": "Password length.", "w": "Number", "ph": "20", "pri": true },
+        { "n": "in_SpecialChars", "d": "Special Characters", "t": "Characters allowed in addition to letters and digits.", "w": "TextComposer", "ph": "@#$%^&*" },
+        { "n": "in_RequireEachClass", "d": "Require Each Class", "t": "Guarantee at least one uppercase, lowercase, digit and special character.", "w": "Toggle", "c": "Advanced", "ph": "True" },
+        { "n": "in_UserName", "d": "User Name", "t": "Username to mask for inclusion in a notification.", "w": "TextComposer", "c": "Masking" },
+        { "n": "in_MaskMode", "d": "Mask Mode", "t": "HEAD masks the first four characters, TAIL the last four, ENDS both, MIDDLE the centre.", "w": "Dropdown", "c": "Masking", "items": ["HEAD", "TAIL", "ENDS", "MIDDLE"], "ph": "HEAD" },
+        { "n": "out_Private_Password", "d": "Password", "t": "The generated password. SecureString by design: there is no plaintext output, because a password that becomes a String can reach a log.", "c": "Output", "pri": true },
+        { "n": "out_MaskedUserName", "d": "Masked User Name", "t": "Masked form of the username, safe to put in an email body.", "w": "TextComposer", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Integration/Graph",
+      "file": "Graph.Token.Get",
+      "family": "microsoft",
+      "display": "Get Graph Token",
+      "tooltip": "Acquires a Microsoft Graph access token using client credentials, cached in-process until shortly before expiry.",
+      "args": [
+        { "n": "in_AppRegistration", "d": "App Registration", "t": "Logical name of the app registration. Resolved through config to a tenant id, client id and credential asset, so adding one is three config rows rather than a library release.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Scope", "d": "Scope", "t": "OAuth2 scope requested. Client-credentials flow against Graph requires .default: narrowing happens in Entra, not at call time.", "w": "TextComposer", "c": "Advanced", "ph": "https://graph.microsoft.com/.default" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Timeout for the token request.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "in_ForceRefresh", "d": "Force Refresh", "t": "Bypass the cache and mint a new token. Use only after a 401 on a call that should have succeeded.", "w": "Toggle", "c": "Advanced" },
+        { "n": "out_Private_GraphToken", "d": "Token", "t": "Bearer token as a SecureString. Pass straight into an activity that accepts one; never convert it to String in a workflow.", "c": "Output", "pri": true },
+        { "n": "out_ExpiresOn", "d": "Expires On", "t": "UTC expiry of the returned token. Informational: the cache handles renewal, so do not branch on this.", "w": "Datetime", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Integration/Graph",
+      "file": "Graph.User.Get",
+      "family": "microsoft",
+      "display": "Get Graph User",
+      "tooltip": "Looks up an Entra ID user by email or user principal name and returns their profile.",
+      "args": [
+        { "n": "in_Private_Token", "d": "Token", "t": "Bearer token from Get Graph Token.", "req": true, "pri": true },
+        { "n": "in_UserEmail", "d": "User Email", "t": "User principal name or mail address.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Fields", "d": "Fields", "t": "Graph $select fields. Defaults to displayName, givenName, surname, jobTitle, mail, mobilePhone, businessPhones, officeLocation, department and accountEnabled.", "w": "StringArray", "c": "Advanced" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_User", "d": "User", "t": "The Graph user object. Empty when not found.", "c": "Output", "pri": true },
+        { "n": "out_Found", "d": "Found", "t": "False when Graph returned 404. A missing user is a business outcome, not a system failure, so it does not throw.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/Outlook",
+      "file": "Mail.Send",
+      "family": "mail",
+      "display": "Send Email",
+      "tooltip": "Sends an email through Outlook 365, falling back to SMTP if the primary channel fails.",
+      "args": [
+        { "n": "in_Connection", "d": "Outlook Connection", "t": "Outlook 365 connection from Integration Service. The primary send channel.", "w": "Connection", "req": true, "pri": true, "atype": 1 },
+        { "n": "in_To", "d": "To", "t": "Recipients. At least one is required.", "w": "StringArray", "req": true, "pri": true },
+        { "n": "in_Subject", "d": "Subject", "t": "Subject line.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Body", "d": "Body", "t": "Message body. HTML is accepted.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_CC", "d": "CC", "t": "CC recipients.", "w": "StringArray", "c": "Recipients" },
+        { "n": "in_BCC", "d": "BCC", "t": "BCC recipients.", "w": "StringArray", "c": "Recipients" },
+        { "n": "in_Attachments", "d": "Attachments", "t": "Full paths of files to attach. Verified before anything is sent, so a bad path fails cleanly rather than half-sending.", "w": "StringArray", "c": "Optional" },
+        { "n": "in_Importance", "d": "Importance", "t": "Message importance.", "w": "Dropdown", "c": "Optional", "items": ["Low", "Normal", "High"], "ph": "Normal" },
+        { "n": "in_FallbackConnection", "d": "SMTP Fallback Connection", "t": "SMTP connection used only when the primary send fails. Leave empty to disable the fallback, in which case a primary failure throws.", "w": "Connection", "c": "Fallback", "atype": 1 },
+        { "n": "out_Success", "d": "Success", "t": "True when the message was accepted by either channel.", "w": "Toggle", "c": "Output", "pri": true },
+        { "n": "out_Channel", "d": "Channel", "t": "Primary or Fallback. Fallback firing means the primary channel is degraded right now: alert on it.", "w": "TextComposer", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/Outlook",
+      "file": "Mail.Reply",
+      "family": "mail",
+      "display": "Reply To Email",
+      "tooltip": "Replies to an Outlook 365 message, optionally to all recipients.",
+      "args": [
+        { "n": "in_Connection", "d": "Outlook Connection", "t": "Outlook 365 connection from Integration Service.", "w": "Connection", "req": true, "pri": true, "atype": 1 },
+        { "n": "in_Message", "d": "Message", "t": "The message being replied to, as returned by Get Emails.", "req": true, "pri": true },
+        { "n": "in_Body", "d": "Body", "t": "Reply body. HTML is accepted.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_ReplyAll", "d": "Reply All", "t": "Reply to every recipient of the original rather than the sender alone.", "w": "Toggle", "pri": true },
+        { "n": "in_CC", "d": "CC", "t": "Additional CC recipients beyond those carried over.", "w": "StringArray", "c": "Recipients" },
+        { "n": "in_BCC", "d": "BCC", "t": "BCC recipients.", "w": "StringArray", "c": "Recipients" },
+        { "n": "in_Attachments", "d": "Attachments", "t": "Full paths of files to attach. Verified before sending.", "w": "StringArray", "c": "Optional" },
+        { "n": "in_Importance", "d": "Importance", "t": "Message importance.", "w": "Dropdown", "c": "Optional", "items": ["Low", "Normal", "High"], "ph": "Normal" },
+        { "n": "out_Success", "d": "Success", "t": "True when the reply was accepted.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/Outlook",
+      "file": "Mail.Forward",
+      "family": "mail",
+      "display": "Forward Email",
+      "tooltip": "Forwards an Outlook 365 message to one or more recipients.",
+      "args": [
+        { "n": "in_Connection", "d": "Outlook Connection", "t": "Outlook 365 connection from Integration Service.", "w": "Connection", "req": true, "pri": true, "atype": 1 },
+        { "n": "in_Message", "d": "Message", "t": "The message being forwarded, as returned by Get Emails.", "req": true, "pri": true },
+        { "n": "in_To", "d": "To", "t": "Recipients of the forward. At least one is required.", "w": "StringArray", "req": true, "pri": true },
+        { "n": "in_Comment", "d": "Comment", "t": "Text placed above the forwarded content.", "w": "TextComposer", "pri": true },
+        { "n": "in_CC", "d": "CC", "t": "CC recipients.", "w": "StringArray", "c": "Recipients" },
+        { "n": "in_BCC", "d": "BCC", "t": "BCC recipients.", "w": "StringArray", "c": "Recipients" },
+        { "n": "in_Attachments", "d": "Attachments", "t": "Additional files to attach beyond those already on the message. Verified before sending.", "w": "StringArray", "c": "Optional" },
+        { "n": "in_Importance", "d": "Importance", "t": "Message importance.", "w": "Dropdown", "c": "Optional", "items": ["Low", "Normal", "High"], "ph": "Normal" },
+        { "n": "out_Success", "d": "Success", "t": "True when the forward was accepted.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/SharePoint",
+      "file": "File.Download",
+      "family": "microsoft",
+      "display": "Download SharePoint File",
+      "tooltip": "Finds a file in a SharePoint site or Teams document library and downloads it.",
+      "args": [
+        { "n": "in_SiteUrl", "d": "Site URL", "t": "Full SharePoint URL of the site or team, copied straight from the browser address bar. For example https://contoso.sharepoint.com/teams/FinanceAutomation", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_FileName", "d": "File Name", "t": "Exact file name including extension. Matched case-insensitively.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_SavePath", "d": "Save Path", "t": "Local folder or full file path to download to. A folder keeps SharePoint's own file name.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_FolderPath", "d": "Folder Path", "t": "Folder within the document library. Leave empty for the root.", "w": "TextComposer", "c": "Location" },
+        { "n": "in_DriveName", "d": "Drive Name", "t": "Document library name when the file is not in the default library.", "w": "TextComposer", "c": "Location" },
+        { "n": "in_Overwrite", "d": "Overwrite", "t": "Replace an existing local file. When false, an existing file causes an exception rather than a silent replace.", "w": "Toggle", "c": "Options" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Timeout for the download.", "w": "Number", "c": "Options", "ph": "120" },
+        { "n": "out_FilePath", "d": "File Path", "t": "Full local path of the downloaded file. Use this rather than rebuilding it from Save Path and File Name.", "w": "TextComposer", "c": "Output", "pri": true },
+        { "n": "out_Found", "d": "Found", "t": "False when no matching file exists at that location. Not finding a file is a normal outcome and does not throw.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "Record.Create",
+      "family": "servicenow",
+      "display": "Create Record",
+      "tooltip": "Creates a record in a ServiceNow table and returns both its sys_id and its display number.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call. Credentials for each instance are resolved from config.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_Table", "d": "Table", "t": "Table to create the record in.", "w": "Dropdown", "req": true, "pri": true, "items": ["incident", "task", "incident_task", "change_request", "change_task", "sc_req_item", "sys_user", "sys_user_group"] },
+        { "n": "in_Payload", "d": "Payload", "t": "Field name to value. Common incident fields: short_description, description, assignment_group, caller_id, urgency, impact, category, state, work_notes. Reference fields take a sys_id, not a display name.", "w": "Dictionary", "req": true, "pri": true },
+        { "n": "in_DisplayValues", "d": "Display Values", "t": "false returns database values, true display values, all both. Display values are slower because ServiceNow resolves them rather than reading them directly.", "w": "Dropdown", "c": "Advanced", "items": ["false", "true", "all"], "ph": "false" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_SysId", "d": "Sys Id", "t": "sys_id of the created record. This is what Update Record and Get Related Tasks need.", "w": "TextComposer", "c": "Output", "pri": true },
+        { "n": "out_Number", "d": "Number", "t": "Display number of the created record, for example INC0012345. This is what goes in a subject line or a log entry a human reads.", "w": "TextComposer", "c": "Output", "pri": true },
+        { "n": "out_Record", "d": "Record", "t": "The full created record.", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "Record.Get",
+      "family": "servicenow",
+      "display": "Get Record",
+      "tooltip": "Retrieves one ServiceNow record by sys_id.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_Table", "d": "Table", "t": "Table to read from.", "w": "Dropdown", "req": true, "pri": true, "items": ["incident", "task", "incident_task", "change_request", "change_task", "sc_req_item", "sys_user", "sys_user_group"] },
+        { "n": "in_SysId", "d": "Sys Id", "t": "The record's 32-character sys_id. Not the display number: INC0012345 is a number, not a sys_id, and passing one returns nothing rather than an error.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Fields", "d": "Fields", "t": "Fields to return. Restricting these is the single biggest performance win on a wide table.", "w": "StringArray", "c": "Advanced" },
+        { "n": "in_DisplayValues", "d": "Display Values", "t": "false returns database values, true display values, all both.", "w": "Dropdown", "c": "Advanced", "items": ["false", "true", "all"], "ph": "false" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_Record", "d": "Record", "t": "The record. Empty when not found.", "c": "Output", "pri": true },
+        { "n": "out_Found", "d": "Found", "t": "False when no record has that sys_id. A missing record does not throw, so a polling loop can continue.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "Record.Query",
+      "family": "servicenow",
+      "display": "Query Records",
+      "tooltip": "Returns ServiceNow records matching an encoded query. Both the query and the limit are required, so an unfiltered request against production cannot be issued by accident.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_Table", "d": "Table", "t": "Table to query.", "w": "Dropdown", "req": true, "pri": true, "items": ["incident", "task", "incident_task", "change_request", "change_task", "sc_req_item", "sys_user", "sys_user_group"] },
+        { "n": "in_Query", "d": "Query", "t": "Encoded query, for example active=true^assignment_group=<sys_id>. Required: an unfiltered request returns up to ServiceNow's default limit of 10,000 records.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Limit", "d": "Limit", "t": "Maximum records to return. Required, because an unbounded query against a production instance is never intended.", "w": "Number", "req": true, "pri": true },
+        { "n": "in_Fields", "d": "Fields", "t": "Fields to return.", "w": "StringArray", "c": "Advanced" },
+        { "n": "in_OrderBy", "d": "Order By", "t": "Field to sort by. Prefix with a minus sign for descending.", "w": "TextComposer", "c": "Advanced" },
+        { "n": "in_DisplayValues", "d": "Display Values", "t": "false returns database values, true display values, all both.", "w": "Dropdown", "c": "Advanced", "items": ["false", "true", "all"], "ph": "false" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_Records", "d": "Records", "t": "Matching records.", "c": "Output", "pri": true },
+        { "n": "out_Count", "d": "Count", "t": "Number of records returned. Equal to Limit means results were truncated, and a warning is logged.", "w": "Number", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "Record.Update",
+      "family": "servicenow",
+      "display": "Update Record",
+      "tooltip": "Updates fields on an existing ServiceNow record.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_Table", "d": "Table", "t": "Table holding the record.", "w": "Dropdown", "req": true, "pri": true, "items": ["incident", "task", "incident_task", "change_request", "change_task", "sc_req_item", "sys_user", "sys_user_group"] },
+        { "n": "in_SysId", "d": "Sys Id", "t": "The record's 32-character sys_id, as returned by Create Record.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_Payload", "d": "Payload", "t": "Fields to set. Only the fields supplied are changed. Common: state, work_notes, close_notes, close_code, assignment_group.", "w": "Dictionary", "req": true, "pri": true },
+        { "n": "in_DisplayValues", "d": "Display Values", "t": "false returns database values, true display values, all both.", "w": "Dropdown", "c": "Advanced", "items": ["false", "true", "all"], "ph": "false" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_Record", "d": "Record", "t": "The record after the update.", "c": "Output" },
+        { "n": "out_Success", "d": "Success", "t": "True when the update was accepted. Updating a record that does not exist throws rather than silently succeeding.", "w": "Toggle", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "Task.GetRelated",
+      "family": "servicenow",
+      "display": "Get Related Tasks",
+      "tooltip": "Returns the child tasks of a ServiceNow record.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_SysId", "d": "Sys Id", "t": "The parent record's 32-character sys_id, as returned by Create Record.", "w": "TextComposer", "req": true, "pri": true },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_Tasks", "d": "Tasks", "t": "Child task records. Empty when there are none.", "c": "Output", "pri": true },
+        { "n": "out_Count", "d": "Count", "t": "Number of related tasks found.", "w": "Number", "c": "Output" }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "User.GetEmails",
+      "family": "servicenow",
+      "display": "Get User Emails",
+      "tooltip": "Resolves ServiceNow user sys_ids to email addresses, and reports which ones did not resolve.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_UserIds", "d": "User Ids", "t": "sys_user sys_ids to resolve.", "w": "StringArray", "req": true, "pri": true },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_Emails", "d": "Emails", "t": "sys_id to email address. Users with no email on record are absent.", "w": "Dictionary", "c": "Output", "pri": true },
+        { "n": "out_NotFound", "d": "Not Found", "t": "sys_ids that did not resolve. Without this, 47 emails back from 50 users looks like success and three people silently stop being notified.", "w": "StringArray", "c": "Output", "pri": true }
+      ]
+    },
+    {
+      "path": "Activities/Integration/ServiceNow",
+      "file": "Group.GetUsers",
+      "family": "servicenow",
+      "display": "Get Group Members",
+      "tooltip": "Expands ServiceNow groups to their member user sys_ids, deduplicated across groups.",
+      "args": [
+        { "n": "in_Instance", "d": "Instance", "t": "ServiceNow instance for the REST call.", "w": "Dropdown", "req": true, "pri": true, "items": ["dev", "uat", "prod"] },
+        { "n": "in_GroupIds", "d": "Group Ids", "t": "sys_user_group sys_ids to expand.", "w": "StringArray", "req": true, "pri": true },
+        { "n": "in_ActiveOnly", "d": "Active Only", "t": "Exclude deactivated users. Leave true: paging people who have left fails silently.", "w": "Toggle", "c": "Advanced", "ph": "True" },
+        { "n": "in_TimeoutSeconds", "d": "Timeout Seconds", "t": "Request timeout.", "w": "Number", "c": "Advanced", "ph": "30" },
+        { "n": "out_UserIds", "d": "User Ids", "t": "Distinct sys_user sys_ids across all groups. A user in two groups appears once.", "w": "StringArray", "c": "Output", "pri": true },
+        { "n": "out_EmptyGroups", "d": "Empty Groups", "t": "Groups that resolved to no members, so an empty notification list is distinguishable from a mistyped group id.", "w": "StringArray", "c": "Output", "pri": true }
+      ]
+    }
+  ]
+}

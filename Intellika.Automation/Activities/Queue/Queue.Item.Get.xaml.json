@@ -1,0 +1,84 @@
+{
+    "DisplayName":  "Get Queue Item",
+    "Tooltip":  "Retrieves one new transaction from an Orchestrator queue.",
+    "HelpLink":  null,
+    "Color":  "#FA4616",
+    "OriginalIconFileName":  "Queue.Item.Get.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_QueueName",
+                          "DisplayName":  "Queue Name",
+                          "Category":  null,
+                          "Tooltip":  "Queue to pull from.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Folder",
+                          "DisplayName":  "Folder",
+                          "Category":  null,
+                          "Tooltip":  "Orchestrator folder holding the queue. Empty uses the robot\u0027s current folder.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_RetrievalOrder",
+                          "DisplayName":  "Retrieval Order",
+                          "Category":  "Filtering",
+                          "Tooltip":  "Order transactions are taken in. In-progress items are deliberately not offered: retrieving one hands a second robot work another robot is already doing.",
+                          "Placeholder":  "NewFirst",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "NewFirst",
+                                                  "NewOnly"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_ReferencePrefix",
+                          "DisplayName":  "Reference Prefix",
+                          "Category":  "Filtering",
+                          "Tooltip":  "Return only items whose Reference starts with this value. Empty matches any.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_QueueItem",
+                          "DisplayName":  "Queue Item",
+                          "Category":  "Output",
+                          "Tooltip":  "The transaction. Nothing when none matched.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Found",
+                          "DisplayName":  "Found",
+                          "Category":  "Output",
+                          "Tooltip":  "True when a transaction was returned. Branch on this to end the transaction loop.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

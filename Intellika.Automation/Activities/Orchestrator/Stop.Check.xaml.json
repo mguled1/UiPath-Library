@@ -1,0 +1,21 @@
+{
+  "DisplayName": "Check For Stop",
+  "Tooltip": "Returns true when a stop has been requested for this job from Orchestrator. Returns rather than throws, so the caller can finish the current transaction first.",
+  "HelpLink": null,
+  "Color": "#47FA16",
+  "OriginalIconFileName": "Stop.Check.xaml.svg",
+  "Arguments": [
+    {
+      "Name": "out_StopRequested",
+      "DisplayName": "Stop Requested",
+      "Category": "Output",
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "Toggle",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

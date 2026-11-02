@@ -1,0 +1,81 @@
+{
+    "DisplayName":  "Get Graph Token",
+    "Tooltip":  "Acquires a Microsoft Graph access token using client credentials, cached in-process until shortly before expiry.",
+    "HelpLink":  null,
+    "Color":  "#0078D4",
+    "OriginalIconFileName":  "Graph.Token.Get.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_AppRegistration",
+                          "DisplayName":  "App Registration",
+                          "Category":  null,
+                          "Tooltip":  "Logical name of the app registration. Resolved through config to a tenant id, client id and credential asset, so adding one is three config rows rather than a library release.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Scope",
+                          "DisplayName":  "Scope",
+                          "Category":  "Advanced",
+                          "Tooltip":  "OAuth2 scope requested. Client-credentials flow against Graph requires .default: narrowing happens in Entra, not at call time.",
+                          "Placeholder":  "https://graph.microsoft.com/.default",
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Timeout for the token request.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_ForceRefresh",
+                          "DisplayName":  "Force Refresh",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Bypass the cache and mint a new token. Use only after a 401 on a call that should have succeeded.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Private_GraphToken",
+                          "DisplayName":  "Token",
+                          "Category":  "Output",
+                          "Tooltip":  "Bearer token as a SecureString. Pass straight into an activity that accepts one; never convert it to String in a workflow.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_ExpiresOn",
+                          "DisplayName":  "Expires On",
+                          "Category":  "Output",
+                          "Tooltip":  "UTC expiry of the returned token. Informational: the cache handles renewal, so do not branch on this.",
+                          "Placeholder":  null,
+                          "Widget":  "Datetime",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

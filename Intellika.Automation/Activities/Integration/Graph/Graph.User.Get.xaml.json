@@ -1,0 +1,81 @@
+{
+    "DisplayName":  "Get Graph User",
+    "Tooltip":  "Looks up an Entra ID user by email or user principal name and returns their profile.",
+    "HelpLink":  null,
+    "Color":  "#0078D4",
+    "OriginalIconFileName":  "Graph.User.Get.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Private_Token",
+                          "DisplayName":  "Token",
+                          "Category":  null,
+                          "Tooltip":  "Bearer token from Get Graph Token.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_UserEmail",
+                          "DisplayName":  "User Email",
+                          "Category":  null,
+                          "Tooltip":  "User principal name or mail address.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Fields",
+                          "DisplayName":  "Fields",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Graph $select fields. Defaults to displayName, givenName, surname, jobTitle, mail, mobilePhone, businessPhones, officeLocation, department and accountEnabled.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_User",
+                          "DisplayName":  "User",
+                          "Category":  "Output",
+                          "Tooltip":  "The Graph user object. Empty when not found.",
+                          "Placeholder":  null,
+                          "Widget":  null,
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Found",
+                          "DisplayName":  "Found",
+                          "Category":  "Output",
+                          "Tooltip":  "False when Graph returned 404. A missing user is a business outcome, not a system failure, so it does not throw.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

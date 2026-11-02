@@ -1,0 +1,117 @@
+{
+    "DisplayName":  "Download SharePoint File",
+    "Tooltip":  "Finds a file in a SharePoint site or Teams document library and downloads it.",
+    "HelpLink":  null,
+    "Color":  "#0078D4",
+    "OriginalIconFileName":  "File.Download.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_SiteUrl",
+                          "DisplayName":  "Site URL",
+                          "Category":  null,
+                          "Tooltip":  "Full SharePoint URL of the site or team, copied straight from the browser address bar. For example https://contoso.sharepoint.com/teams/FinanceAutomation",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_FileName",
+                          "DisplayName":  "File Name",
+                          "Category":  null,
+                          "Tooltip":  "Exact file name including extension. Matched case-insensitively.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_SavePath",
+                          "DisplayName":  "Save Path",
+                          "Category":  null,
+                          "Tooltip":  "Local folder or full file path to download to. A folder keeps SharePoint\u0027s own file name.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_FolderPath",
+                          "DisplayName":  "Folder Path",
+                          "Category":  "Location",
+                          "Tooltip":  "Folder within the document library. Leave empty for the root.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_DriveName",
+                          "DisplayName":  "Drive Name",
+                          "Category":  "Location",
+                          "Tooltip":  "Document library name when the file is not in the default library.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Overwrite",
+                          "DisplayName":  "Overwrite",
+                          "Category":  "Options",
+                          "Tooltip":  "Replace an existing local file. When false, an existing file causes an exception rather than a silent replace.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Options",
+                          "Tooltip":  "Timeout for the download.",
+                          "Placeholder":  "120",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_FilePath",
+                          "DisplayName":  "File Path",
+                          "Category":  "Output",
+                          "Tooltip":  "Full local path of the downloaded file. Use this rather than rebuilding it from Save Path and File Name.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Found",
+                          "DisplayName":  "Found",
+                          "Category":  "Output",
+                          "Tooltip":  "False when no matching file exists at that location. Not finding a file is a normal outcome and does not throw.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

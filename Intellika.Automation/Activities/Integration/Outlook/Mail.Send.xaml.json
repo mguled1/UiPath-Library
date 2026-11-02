@@ -1,0 +1,145 @@
+{
+    "DisplayName":  "Send Email",
+    "Tooltip":  "Sends an email through Outlook 365, falling back to SMTP if the primary channel fails.",
+    "HelpLink":  null,
+    "Color":  "#0078D4",
+    "OriginalIconFileName":  "Mail.Send.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Connection",
+                          "DisplayName":  "Outlook Connection",
+                          "Category":  null,
+                          "Tooltip":  "Outlook 365 connection from Integration Service. The primary send channel.",
+                          "Placeholder":  null,
+                          "Widget":  "Connection",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  1,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_To",
+                          "DisplayName":  "To",
+                          "Category":  null,
+                          "Tooltip":  "Recipients. At least one is required.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Subject",
+                          "DisplayName":  "Subject",
+                          "Category":  null,
+                          "Tooltip":  "Subject line.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Body",
+                          "DisplayName":  "Body",
+                          "Category":  null,
+                          "Tooltip":  "Message body. HTML is accepted.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_CC",
+                          "DisplayName":  "CC",
+                          "Category":  "Recipients",
+                          "Tooltip":  "CC recipients.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_BCC",
+                          "DisplayName":  "BCC",
+                          "Category":  "Recipients",
+                          "Tooltip":  "BCC recipients.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Attachments",
+                          "DisplayName":  "Attachments",
+                          "Category":  "Optional",
+                          "Tooltip":  "Full paths of files to attach. Verified before anything is sent, so a bad path fails cleanly rather than half-sending.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_Importance",
+                          "DisplayName":  "Importance",
+                          "Category":  "Optional",
+                          "Tooltip":  "Message importance.",
+                          "Placeholder":  "Normal",
+                          "Widget":  "Dropdown",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "Low",
+                                                  "Normal",
+                                                  "High"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_FallbackConnection",
+                          "DisplayName":  "SMTP Fallback Connection",
+                          "Category":  "Fallback",
+                          "Tooltip":  "SMTP connection used only when the primary send fails. Leave empty to disable the fallback, in which case a primary failure throws.",
+                          "Placeholder":  null,
+                          "Widget":  "Connection",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  1,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Success",
+                          "DisplayName":  "Success",
+                          "Category":  "Output",
+                          "Tooltip":  "True when the message was accepted by either channel.",
+                          "Placeholder":  null,
+                          "Widget":  "Toggle",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Channel",
+                          "DisplayName":  "Channel",
+                          "Category":  "Output",
+                          "Tooltip":  "Primary or Fallback. Fallback firing means the primary channel is degraded right now: alert on it.",
+                          "Placeholder":  null,
+                          "Widget":  "TextComposer",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}

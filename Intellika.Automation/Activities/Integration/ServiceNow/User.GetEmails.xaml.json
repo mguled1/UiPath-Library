@@ -1,0 +1,73 @@
+{
+    "DisplayName":  "Get User Emails",
+    "Tooltip":  "Resolves ServiceNow user sys_ids to email addresses, and reports which ones did not resolve.",
+    "HelpLink":  null,
+    "Color":  "#7AAC99",
+    "OriginalIconFileName":  "User.GetEmails.xaml.svg",
+    "Arguments":  [
+                      {
+                          "Name":  "in_Instance",
+                          "DisplayName":  "Instance",
+                          "Category":  null,
+                          "Tooltip":  "ServiceNow instance for the REST call.",
+                          "Placeholder":  null,
+                          "Widget":  "Dropdown",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  [
+                                                  "dev",
+                                                  "uat",
+                                                  "prod"
+                                              ]
+                      },
+                      {
+                          "Name":  "in_UserIds",
+                          "DisplayName":  "User Ids",
+                          "Category":  null,
+                          "Tooltip":  "sys_user sys_ids to resolve.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  true,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "in_TimeoutSeconds",
+                          "DisplayName":  "Timeout Seconds",
+                          "Category":  "Advanced",
+                          "Tooltip":  "Request timeout.",
+                          "Placeholder":  "30",
+                          "Widget":  "Number",
+                          "IsRequired":  false,
+                          "IsPrincipal":  false,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_Emails",
+                          "DisplayName":  "Emails",
+                          "Category":  "Output",
+                          "Tooltip":  "sys_id to email address. Users with no email on record are absent.",
+                          "Placeholder":  null,
+                          "Widget":  "Dictionary",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      },
+                      {
+                          "Name":  "out_NotFound",
+                          "DisplayName":  "Not Found",
+                          "Category":  "Output",
+                          "Tooltip":  "sys_ids that did not resolve. Without this, 47 emails back from 50 users looks like success and three people silently stop being notified.",
+                          "Placeholder":  null,
+                          "Widget":  "StringArray",
+                          "IsRequired":  false,
+                          "IsPrincipal":  true,
+                          "ArgumentType":  0,
+                          "DataSourceItems":  null
+                      }
+                  ]
+}
